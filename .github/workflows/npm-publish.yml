@@ -29,4 +29,4 @@ jobs:
       - name: Publish to NPM Registry
         # --provenance is required for Trusted Publishing
         # --access public ensures it is not private
-        run: npm publish --provenance --access public
+        run: npm publish --access public
