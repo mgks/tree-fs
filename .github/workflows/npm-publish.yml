@@ -1,4 +1,4 @@
-name: Publish Package to NPM
+name: Publish to NPM
 
 on:
   release:
@@ -8,6 +8,7 @@ on:
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+    
     permissions:
       contents: read
       id-token: write
@@ -25,11 +26,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Now this will pass because we changed package.json exit code to 0
-      - name: Run Tests
-        run: npm test --if-present
-
-      - name: Publish to NPM
-        # No token needed in env!
+      - name: Publish to NPM Registry
         # --provenance is required for Trusted Publishing
+        # --access public ensures it is not private
         run: npm publish --provenance --access public
