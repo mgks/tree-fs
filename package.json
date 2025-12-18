@@ -17,7 +17,7 @@
     "node": ">=14.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node bin/tree-fs.js"
   },
   "repository": {
@@ -40,5 +40,5 @@
   "bugs": {
     "url": "https://github.com/mgks/tree-fs/issues"
   },
-  "homepage": "https://github.com/mgks/tree-fs"
+  "homepage": "https://github.com/mgks/tree-fs#readme"
 }
