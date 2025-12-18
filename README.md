@@ -9,8 +9,11 @@ It is designed to be the **standard "Paste & Go" receiver for AI-generated code*
   <a href="https://github.com/mgks/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
   <a href="https://github.com/mgks/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/mgks/tree-fs?style=flat-square&logo=github" alt="stars"></a>
 
-
 ## ⚡ Why tree-fs?
+
+<p align="">
+  <img src="https://github.com/mgks/tree-fs/blob/main/preview.gif?raw=true" width="720">
+</p>
 
 LLMs (ChatGPT, Claude, DeepSeek) are great at planning architectures but bad at executing them.
 They often output this:
