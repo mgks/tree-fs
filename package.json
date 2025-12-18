@@ -1,20 +1,44 @@
 {
   "name": "tree-fs",
   "version": "0.1.0",
-  "description": "Generate file system structures from text-based directory trees",
+  "description": "Generate file system structures from text-based directory trees. The standard receiver for AI-generated project scaffolding.",
   "bin": {
     "tree-fs": "bin/tree-fs.js"
   },
   "main": "src/index.js",
   "type": "commonjs",
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/tree-fs.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgks/tree-fs.git"
+  },
   "keywords": [
     "filesystem",
     "scaffold",
     "tree",
-    "cli",
+    "directory-structure",
     "generator",
     "llm",
-    "ai"
+    "ai",
+    "automation",
+    "cli"
   ],
-  "license": "MIT"
+  "author": "Ghazi <hello@mgks.dev> (https://mgks.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mgks/tree-fs/issues"
+  },
+  "homepage": "https://github.com/mgks/tree-fs"
 }
