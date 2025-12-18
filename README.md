@@ -6,8 +6,8 @@ It is designed to be the **standard "Paste & Go" receiver for AI-generated code*
 
   <a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/v/tree-fs.svg?style=flat-square&color=007acc" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/dt/tree-fs.svg?style=flat-square&color=success" alt="npm downloads"></a>
-  <a href="https://github.com/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
-  <a href="https://github.com/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/tree-fs?style=flat-square&logo=github" alt="stars"></a>
+  <a href="https://github.com/mgks/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
+  <a href="https://github.com/mgks/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/mgks/tree-fs?style=flat-square&logo=github" alt="stars"></a>
 
 
 ## ⚡ Why tree-fs?
