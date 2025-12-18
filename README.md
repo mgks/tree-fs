@@ -7,7 +7,6 @@ It is designed to be the **standard "Paste & Go" receiver for AI-generated code*
 [![npm version](https://img.shields.io/npm/v/tree-fs.svg)](https://www.npmjs.com/package/tree-fs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
----
 
 ## ⚡ Why tree-fs?
 
@@ -30,8 +29,6 @@ Copying that structure manually is tedious. **tree-fs** makes it instant.
 *   **Safe:** Never overwrites existing files by default.
 *   **Smart:** Distinguishes `v1.0` (folder) from `v1.0.js` (file) automatically.
 *   **Zero Dependencies:** Installs in seconds.
-
----
 
 ## 🚀 Usage
 
@@ -85,8 +82,6 @@ generateFS(tree, path.resolve(__dirname, "./output"))
 console.log("Structure created!")
 ```
 
----
-
 ## 💡 Syntax Guide & Robustness
 
 tree-fs is built to handle the "messy reality" of text inputs.
@@ -131,8 +126,6 @@ project
 Known files without extensions are correctly identified as files.
 *   `Dockerfile`, `Makefile`, `LICENSE`, `Procfile`, `.gitignore`, `Jenkinsfile`
 
----
-
 ## 📦 CI/CD Integration
 
 You can use `tree-fs` to scaffold environments in GitHub Actions or pipelines.
@@ -146,8 +139,6 @@ To test without writing files (Dry Run):
 ```bash
 tree-fs structure.txt --dry-run
 ```
-
----
 
 ## License
 
