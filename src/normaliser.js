@@ -1,36 +1,39 @@
 // src/normaliser.js
 
-// 1. Expanded Regex to catch +, >, and markdown bullets
+// Catch standard tree characters, markdown bullets, and ASCII symbols (+, >, -)
 const STRIP_REGEX = /^[\s│├└─•*|\-+>]+/
 
 function normaliseLines(input) {
   return input
     .split("\n")
-    .map(line => line.replace(/\r/g, ""))
+    .map(line => line.replace(/\r/g, "")) // Handle Windows CRLF
     .filter(Boolean)
     .map(raw => {
-      // 2. Detect indentation based on prefix length
-      const match = raw.match(STRIP_REGEX)
-      const prefixLength = match ? match[0].length : 0
-      
-      // 3. Strip comments (anything after ' #')
-      // We explicitly look for " #" so we don't break "page#1.js"
-      const commentIndex = raw.indexOf(" #")
-      let cleaned = commentIndex !== -1 ? raw.substring(0, commentIndex) : raw
+      // 1. Windows Fix: Normalize backslashes to forward slashes immediately
+      const normalizedRaw = raw.replace(/\\/g, "/")
 
-      // 4. Check for explicit trailing slash (User saying "This is a folder/")
+      // 2. Calculate indent based on the full prefix (spaces + tree chars)
+      const match = normalizedRaw.match(STRIP_REGEX)
+      const prefixLength = match ? match[0].length : 0
+
+      // 3. Strip comments (anything after ' #')
+      const commentIndex = normalizedRaw.indexOf(" #")
+      let cleaned = commentIndex !== -1 ? normalizedRaw.substring(0, commentIndex) : normalizedRaw
+
+      // 4. Check for explicit trailing slash
       const endsWithSlash = cleaned.trim().endsWith("/")
 
+      // 5. Clean up the name
       cleaned = cleaned
         .replace(STRIP_REGEX, "") // Remove tree characters
-        .replace(/\/$/, "")       // Remove that trailing slash for the name
+        .replace(/\/$/, "")       // Remove trailing slash for name storage
         .trim()
 
       return {
-        raw,
+        raw: normalizedRaw,
         indent: prefixLength,
         name: cleaned,
-        explicitFolder: endsWithSlash // Pass this signal to the parser
+        explicitFolder: endsWithSlash
       }
     })
     .filter(line => line.name.length > 0)
