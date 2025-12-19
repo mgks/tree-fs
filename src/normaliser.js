@@ -1,30 +1,37 @@
 // src/normaliser.js
 
-// Catch standard tree characters, markdown bullets, and ASCII symbols (+, >, -)
+// 1. Tree Characters & Bullets
 const STRIP_REGEX = /^[\s│├└─•*|\-+>]+/
+
+// 2. Emoji Regex (Matches standard unicode emojis at the start of strings)
+// Uses the 'u' flag for unicode support.
+const EMOJI_REGEX = /^[\p{Emoji}\u200d\ufe0f]+\s*/u
+
+// 3. Trailing Parenthesis Comment Regex
+// Matches " (Text)" at the end of the string.
+// Must have at least one space before the '(' to distinguish from files like "data(1).json"
+const PAREN_COMMENT_REGEX = /\s+\([^)]+\)$/
 
 function normaliseLines(input) {
   return input
     .split("\n")
-    .map(line => line.replace(/\r/g, "")) // Handle Windows CRLF
+    .map(line => line.replace(/\r/g, "")) // Windows CRLF handling
     .filter(Boolean)
     .map(raw => {
-      // 1. Windows Fix: Normalize backslashes to forward slashes immediately
+      // A. Normalize slashes
       const normalizedRaw = raw.replace(/\\/g, "/")
 
-      // 2. Calculate indent based on the full prefix (spaces + tree chars)
-      const match = normalizedRaw.match(STRIP_REGEX)
-      const prefixLength = match ? match[0].length : 0
+      // B. Calculate Indent (based on tree characters)
+      const treeMatch = normalizedRaw.match(STRIP_REGEX)
+      const prefixLength = treeMatch ? treeMatch[0].length : 0
 
-      // 3. Strip comments
-      // Look for multiple comment styles. We use "space + marker" to avoid false positives.
+      // C. Strip Standard Comments (#, //, <--)
       const commentMarkers = [" #", " <--", " //"]
       let splitIndex = -1
 
       for (const marker of commentMarkers) {
         const idx = normalizedRaw.indexOf(marker)
         if (idx !== -1) {
-          // Keep the earliest marker found
           if (splitIndex === -1 || idx < splitIndex) {
             splitIndex = idx
           }
@@ -33,20 +40,19 @@ function normaliseLines(input) {
 
       let cleaned = splitIndex !== -1 ? normalizedRaw.substring(0, splitIndex) : normalizedRaw
 
-      // 4. Check for explicit trailing slash
-      const endsWithSlash = cleaned.trim().endsWith("/")
-
-      // 5. Clean up the name
+      // D. Clean the Name
       cleaned = cleaned
-        .replace(STRIP_REGEX, "") // Remove tree characters
-        .replace(/\/$/, "")       // Remove trailing slash for name storage
+        .replace(STRIP_REGEX, "")         // 1. Remove tree structure
+        .replace(EMOJI_REGEX, "")         // 2. Remove emojis (📁, 📄, etc)
+        .replace(PAREN_COMMENT_REGEX, "") // 3. Remove (The logic)
+        .replace(/\/$/, "")               // 4. Remove trailing slash
         .trim()
 
       return {
         raw: normalizedRaw,
         indent: prefixLength,
         name: cleaned,
-        explicitFolder: endsWithSlash
+        explicitFolder: normalizedRaw.trim().endsWith("/")
       }
     })
     .filter(line => line.name.length > 0)
