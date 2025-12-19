@@ -131,6 +131,14 @@ project
 Known files without extensions are correctly identified as files.
 *   `Dockerfile`, `Makefile`, `LICENSE`, `Procfile`, `.gitignore`, `Jenkinsfile`
 
+### 6. Indicators & Comments
+We strip out common markers used to highlight specific files in documentation.
+```text
+project
+├── src/  <-- Working directory
+├── utils.js // Deprecated
+└── .env # Do not commit
+
 ## 📦 CI/CD Integration
 
 You can use `tree-fs` to scaffold environments in GitHub Actions or pipelines.
