@@ -138,6 +138,7 @@ project
 ├── src/  <-- Working directory
 ├── utils.js // Deprecated
 └── .env # Do not commit
+```
 
 ## 📦 CI/CD Integration
 
