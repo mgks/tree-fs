@@ -26,7 +26,9 @@
     "llm",
     "ai",
     "automation",
-    "cli"
+    "cli",
+    "fs",
+    "mkdir"
   ],
   "engines": {
     "node": ">=14.0.0"
