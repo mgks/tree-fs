@@ -1,6 +1,6 @@
 {
   "name": "tree-fs",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Generate file system structures from text-based directory trees. The standard receiver for AI-generated project scaffolding.",
   "bin": {
     "tree-fs": "bin/tree-fs.js"
@@ -13,18 +13,11 @@
     "README.md",
     "LICENSE"
   ],
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node bin/tree-fs.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mgks/tree-fs.git"
-  },
-  "keywords": [
+    "keywords": [
     "filesystem",
     "scaffold",
     "tree",
@@ -35,10 +28,21 @@
     "automation",
     "cli"
   ],
-  "author": "Ghazi <hello@mgks.dev> (https://mgks.dev)",
-  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": {
+    "name": "mgks",
+    "url": "https://mgks.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgks/tree-fs.git"
+  },
   "bugs": {
     "url": "https://github.com/mgks/tree-fs/issues"
   },
-  "homepage": "https://github.com/mgks/tree-fs#readme"
+  "homepage": "https://github.com/mgks/tree-fs#readme",
+  "funding": "https://github.com/sponsors/mgks",
+  "license": "MIT"
 }
