@@ -87,7 +87,7 @@ generateFS(tree, path.resolve(__dirname, "./output"))
 console.log("Structure created!")
 ```
 
-## {} Syntax Guide & Robustness
+## { } Syntax Guide & Robustness
 
 tree-fs is built to handle the "messy reality" of text inputs.
 
