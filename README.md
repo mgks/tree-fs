@@ -140,6 +140,8 @@ project
 └── .env # Do not commit
 ```
 
+*Result: Creates folder src and files utils.js, .env. All comments are ignored.*
+
 ## 📦 CI/CD Integration
 
 You can use `tree-fs` to scaffold environments in GitHub Actions or pipelines.
