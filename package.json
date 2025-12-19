@@ -1,6 +1,6 @@
 {
   "name": "tree-fs",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Generate file system structures from text-based directory trees. The standard receiver for AI-generated project scaffolding.",
   "bin": {
     "tree-fs": "bin/tree-fs.js"
