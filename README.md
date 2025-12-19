@@ -58,7 +58,22 @@ Generate structure from a text file saved in your repo.
 tree-fs structure.txt
 ```
 
-### 3. Programmatic API (For Tool Builders)
+### 3. Unix Piping (Stdin)
+
+You can pipe tree content directly into `tree-fs`. Perfect for automation or clipboard tools.
+
+```bash
+# Pipe from a file
+cat structure.txt | tree-fs
+
+# Pipe from clipboard (macOS)
+pbpaste | tree-fs
+
+# Echo directly
+echo "src/\n  index.js" | tree-fs
+```
+
+### 4. Programmatic API (For Tool Builders)
 
 Embed `tree-fs` into your own CLIs, generators, or scripts.
 
@@ -160,6 +175,17 @@ my-project
 *Result: Creates folder src and files main.js, theme.css, package.json.*
 
 **Note:** Internal emojis (logo_🔥.png) and filenames with parentheses (image(1).png) are preserved. We only strip "detached" decorations separated by spaces.
+
+## 🤖 The AI Workflow
+
+To get the perfect output from ChatGPT, Claude, or DeepSeek, add this to your system prompt or custom instructions:
+
+> "When asked to generate project directory structures, output them as a plain text tree diagram. Do not use code blocks for creation commands."
+
+Then simply copy the output and run:
+```bash
+npx tree-fs
+```
 
 ## 📦 CI/CD Integration
 
