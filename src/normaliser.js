@@ -16,9 +16,22 @@ function normaliseLines(input) {
       const match = normalizedRaw.match(STRIP_REGEX)
       const prefixLength = match ? match[0].length : 0
 
-      // 3. Strip comments (anything after ' #')
-      const commentIndex = normalizedRaw.indexOf(" #")
-      let cleaned = commentIndex !== -1 ? normalizedRaw.substring(0, commentIndex) : normalizedRaw
+      // 3. Strip comments
+      // Look for multiple comment styles. We use "space + marker" to avoid false positives.
+      const commentMarkers = [" #", " <--", " //"]
+      let splitIndex = -1
+
+      for (const marker of commentMarkers) {
+        const idx = normalizedRaw.indexOf(marker)
+        if (idx !== -1) {
+          // Keep the earliest marker found
+          if (splitIndex === -1 || idx < splitIndex) {
+            splitIndex = idx
+          }
+        }
+      }
+
+      let cleaned = splitIndex !== -1 ? normalizedRaw.substring(0, splitIndex) : normalizedRaw
 
       // 4. Check for explicit trailing slash
       const endsWithSlash = cleaned.trim().endsWith("/")
