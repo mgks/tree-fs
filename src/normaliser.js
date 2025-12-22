@@ -22,13 +22,20 @@ function normaliseLines(input) {
       // A. Normalize slashes
       let normalizedRaw = raw.replace(/\\/g, "/")
 
-      // B. "Broken Root" Normalization
-      // Fixes copy-paste artifacts where the first line is missing the pipe (── vs ├──)
+      // B. "Broken Root" Normalization (Unicode & ASCII)
+      // 1. Fix Unicode: "── " -> "├── " (3 chars -> 4 chars)
       if (normalizedRaw.trim().startsWith("── ")) {
         normalizedRaw = normalizedRaw.replace("── ", "├── ")
       }
+      // 2. Fix ASCII: "-- " -> "|-- " (3 chars -> 4 chars)
+      // This ensures "-- folder" aligns with sibling "|-- file"
+      if (normalizedRaw.trim().startsWith("-- ")) {
+        normalizedRaw = normalizedRaw.replace("-- ", "|-- ")
+      }
 
-      // C. Calculate Indent (Must happen AFTER normalization)
+      // C. Calculate Indent
+      // The regex ^[\s│├└─•*|\-+>]+ catches:
+      // \s (spaces), └ (last child), + (ascii), - (dashes), | (pipes)
       const treeMatch = normalizedRaw.match(STRIP_REGEX)
       const prefixLength = treeMatch ? treeMatch[0].length : 0
 
