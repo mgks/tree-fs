@@ -20,13 +20,19 @@ function normaliseLines(input) {
     .filter(Boolean)
     .map(raw => {
       // A. Normalize slashes
-      const normalizedRaw = raw.replace(/\\/g, "/")
+      let normalizedRaw = raw.replace(/\\/g, "/")
 
-      // B. Calculate Indent
+      // B. "Broken Root" Normalization
+      // Fixes copy-paste artifacts where the first line is missing the pipe (── vs ├──)
+      if (normalizedRaw.trim().startsWith("── ")) {
+        normalizedRaw = normalizedRaw.replace("── ", "├── ")
+      }
+
+      // C. Calculate Indent (Must happen AFTER normalization)
       const treeMatch = normalizedRaw.match(STRIP_REGEX)
       const prefixLength = treeMatch ? treeMatch[0].length : 0
 
-      // C. Strip Explicit Comments (#, //, <--)
+      // D. Strip Explicit Comments
       const commentMarkers = [" #", " <--", " //"]
       let splitIndex = -1
       for (const marker of commentMarkers) {
@@ -37,15 +43,14 @@ function normaliseLines(input) {
       }
       let cleaned = splitIndex !== -1 ? normalizedRaw.substring(0, splitIndex) : normalizedRaw
 
-      // D. Deep Cleaning Chain
-      // We repeat the trailing checks to handle mixed cases like "file.js (Logic) 🚀"
+      // E. Deep Cleaning Chain
       cleaned = cleaned
-        .replace(STRIP_REGEX, "")           // Remove tree chars
-        .replace(LEADING_EMOJI_REGEX, "")   // Remove leading emojis
-        .replace(TRAILING_EMOJI_REGEX, "")  // Remove trailing emojis (Pass 1)
-        .replace(PAREN_COMMENT_REGEX, "")   // Remove trailing parens
-        .replace(TRAILING_EMOJI_REGEX, "")  // Remove trailing emojis (Pass 2 - catches leftovers)
-        .replace(/\/$/, "")                 // Remove trailing slash
+        .replace(STRIP_REGEX, "")           
+        .replace(LEADING_EMOJI_REGEX, "")   
+        .replace(TRAILING_EMOJI_REGEX, "")  
+        .replace(PAREN_COMMENT_REGEX, "")   
+        .replace(TRAILING_EMOJI_REGEX, "")  
+        .replace(/\/$/, "")                 
         .trim()
 
       return {
