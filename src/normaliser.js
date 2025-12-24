@@ -33,13 +33,22 @@ function normaliseLines(input) {
         normalizedRaw = normalizedRaw.replace("-- ", "|-- ")
       }
 
-      // C. Calculate Indent
-      // The regex ^[\s│├└─•*|\-+>]+ catches:
-      // \s (spaces), └ (last child), + (ascii), - (dashes), | (pipes)
+      // -----------------------------------------------------------
+      // C. FIX: "Indented Marker" Normalization (The Space Shift Bug)
+      // If a line starts with spaces followed immediately by a strong marker
+      // (├──, └──, |--), it is an alignment error. We strip the spaces.
+      // -----------------------------------------------------------
+      const indentedMarker = normalizedRaw.match(/^(\s+)(├──|└──|\|--|\\--|\+--)/);
+      if (indentedMarker) {
+        // indentedMarker[1] contains the leading spaces. Replace them with empty string.
+        normalizedRaw = normalizedRaw.replace(indentedMarker[1], "");
+      }
+
+      // D. Calculate Indent
       const treeMatch = normalizedRaw.match(STRIP_REGEX)
       const prefixLength = treeMatch ? treeMatch[0].length : 0
 
-      // D. Strip Explicit Comments
+      // E. Strip Explicit Comments
       const commentMarkers = [" #", " <--", " //"]
       let splitIndex = -1
       for (const marker of commentMarkers) {
@@ -50,7 +59,7 @@ function normaliseLines(input) {
       }
       let cleaned = splitIndex !== -1 ? normalizedRaw.substring(0, splitIndex) : normalizedRaw
 
-      // E. Deep Cleaning Chain
+      // F. Deep Cleaning Chain
       cleaned = cleaned
         .replace(STRIP_REGEX, "")           
         .replace(LEADING_EMOJI_REGEX, "")   
