@@ -4,10 +4,10 @@
 
 It is designed to be the **standard "Paste & Go" receiver for AI-generated code**.
 
-  <a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/v/tree-fs.svg?style=flat-square&color=007acc" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/dt/tree-fs.svg?style=flat-square&color=success" alt="npm downloads"></a>
-  <a href="https://github.com/mgks/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
-  <a href="https://github.com/mgks/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/mgks/tree-fs?style=flat-square&logo=github" alt="stars"></a>
+<a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/v/tree-fs.svg?style=flat-square&color=007acc" alt="npm version"></a>
+<a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/dt/tree-fs.svg?style=flat-square&color=success" alt="npm downloads"></a>
+<a href="https://github.com/mgks/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
+<a href="https://github.com/mgks/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/mgks/tree-fs?style=flat-square&logo=github" alt="stars"></a>
 
 ## ⚡ Why tree-fs?
 
@@ -29,7 +29,7 @@ my-app
 Copying that structure manually is tedious. **tree-fs** makes it instant.
 
 ### Features
-*   **AI Compatible:** Strips comments (`# entry point`) and handles weird Markdown formatting.
+*   **AI Compatible:** Strips comments, emojis, and weird formatting automatically.
 *   **Deterministic:** Same text input = same file structure. Always.
 *   **Safe:** Never overwrites existing files by default.
 *   **Smart:** Distinguishes `v1.0` (folder) from `v1.0.js` (file) automatically.
@@ -38,20 +38,15 @@ Copying that structure manually is tedious. **tree-fs** makes it instant.
 ## 🚀 Usage
 
 ### 1. Interactive Mode (The "Paste" Workflow)
-
 Perfect for when ChatGPT gives you a project structure.
 
 ```bash
 npx tree-fs
 ```
-*(You don't even need to install it!)*
-
 1.  Paste your tree.
 2.  Press **Enter twice**.
-3.  Done.
 
 ### 2. CLI with File Input
-
 Generate structure from a text file saved in your repo.
 
 ```bash
@@ -59,146 +54,76 @@ tree-fs structure.txt
 ```
 
 ### 3. Unix Piping (Stdin)
-
-You can pipe tree content directly into `tree-fs`. Perfect for automation or clipboard tools.
-
-```bash
-# Pipe from a file
-cat structure.txt | tree-fs
-
-# Pipe from clipboard (macOS)
-pbpaste | tree-fs
-
-# Echo directly
-echo "src/\n  index.js" | tree-fs
-```
-
-### 4. Programmatic API (For Tool Builders)
-
-Embed `tree-fs` into your own CLIs, generators, or scripts.
+Pipe content directly for automation.
 
 ```bash
-npm install tree-fs
+cat structure.txt | tree-fs      # From file
+pbpaste | tree-fs                # From clipboard (macOS)
+echo "src/\n index.js" | tree-fs # Echo directly
 ```
+
+### 4. Programmatic API
+Embed `tree-fs` into your own CLIs or scripts.
 
 ```javascript
 const { parseTree, generateFS } = require("tree-fs")
-const path = require("path")
 
-const treeInput = `
-backend-api
-├── src
-│   ├── controllers/
-│   └── models/
-└── .env
-`
-
-// 1. Parse text into JSON AST
-const tree = parseTree(treeInput)
-
-// 2. Generate files at the target directory
-generateFS(tree, path.resolve(__dirname, "./output"))
-
-console.log("Structure created!")
-```
-
-## { } Syntax Guide & Robustness
-
-tree-fs is built to handle the "messy reality" of text inputs.
-
-### 1. Comments are ignored
-Great for annotated AI outputs.
-```bash
+const tree = parseTree(`
 src
-├── auth.js  # Handles JWT tokens
-└── db.js    # Connection logic
-```
-*Result: Creates `auth.js` and `db.js`. Comments are stripped.*
+├── index.js
+└── utils/
+`)
 
-### 2. Explicit Folders
-If a name looks like a file but is actually a folder (e.g., version numbers), end it with a slash `/`.
-```bash
-api
-├── v1.5/     <-- Created as a folder
-└── v2.0/     <-- Created as a folder
+generateFS(tree, process.cwd())
 ```
 
-### 3. Smart Nesting
-If an item has children indented below it, it is **automatically treated as a folder**, even if it has a dot.
-```bash
-app
-└── v2.5            <-- Treated as folder because it has a child
-    └── migrator.js
-```
+## 🛡️ Robustness & Syntax
 
-### 4. Markdown & Symbols
-We handle standard tree characters, ASCII art, and bullets.
+tree-fs is built to handle the "messy reality" of text inputs. It creates the structure you *intend*, not just what you *type*.
+
+### 1. Noise Cleaning (Comments & Rich Text)
+We automatically strip comments, indicators, and "decorative" emojis often added by AI models.
+
 ```bash
 project
-- src
-  + components
-    > Header.jsx
-* public
-  - logo.png
+├── 📁 src 🚀         <-- Leading/Trailing emojis stripped
+│   ├── main.js       (Core Logic)  <-- Explanations stripped
+│   └── theme.css     // Dark Mode  <-- Comments stripped
+└── .env              # Do not commit
 ```
+*Result: Clean folder `src` and files `main.js`, `theme.css`, `.env`.*
 
-### 5. Config Files
-Known files without extensions are correctly identified as files.
-*   `Dockerfile`, `Makefile`, `LICENSE`, `Procfile`, `.gitignore`, `Jenkinsfile`
-
-### 6. Indicators & Comments
-We strip out common markers used to highlight specific files in documentation.
+### 2. Flexible Formats
+We support standard trees, ASCII art, and mixed indentation.
 ```bash
 project
-├── src/  <-- Working directory
-├── utils.js // Deprecated
-└── .env # Do not commit
+├── standard-style
++-- ascii-style
+|-- legacy-style
+  └── space-indentation
 ```
 
-*Result: Creates folder src and files utils.js, .env. All comments are ignored.*
+### 3. Smart Folder Detection
+*   **Explicit:** Ends in slash (`v1.0/` → Folder).
+*   **Implicit:** Has children (`v1.0` containing files → Folder).
+*   **Files:** Known configs (`Dockerfile`, `Makefile`, `LICENSE`) are treated as files even without extensions.
 
-### 7. Rich Text & Emojis
-We automatically clean up "decorative" trees often generated by newer AI models (like Claude or GPT-4o), regardless of where the decoration is placed.
-
-**It handles:**
-*   **Leading/Trailing Emojis:** `📁 src`, `index.js 🚀`, `✨ components ✨`
-*   **Explanations:** `index.js (Core Logic)`, `main.py (Entry)`
-
-```bash
-my-project
-├── 📁 src 🚀
-│   ├── main.js       (The Brain) 🧠
-│   └── theme.css     (Dark Mode)
-└── 📄 package.json 📦
-```
-
-*Result: Creates folder src and files main.js, theme.css, package.json.*
-
-**Note:** Internal emojis (logo_🔥.png) and filenames with parentheses (image(1).png) are preserved. We only strip "detached" decorations separated by spaces.
+### 4. Copy-Paste Resilience
+If you copy a partial tree and miss the vertical pipe (`── folder` instead of `├── folder`), or accidentally indent lines with extra spaces, `tree-fs` automatically detects and aligns them to the correct root.
 
 ## 🤖 The AI Workflow
 
-To get the perfect output from ChatGPT, Claude, or DeepSeek, add this to your system prompt or custom instructions:
+To get the perfect output from ChatGPT, Claude, or DeepSeek, add this to your system prompt:
 
 > "When asked to generate project directory structures, output them as a plain text tree diagram. Do not use code blocks for creation commands."
 
-Then simply copy the output and run:
-```bash
-npx tree-fs
-```
+Then simply copy the output and run `npx tree-fs`.
 
 ## 📦 CI/CD Integration
-
-You can use `tree-fs` to scaffold environments in GitHub Actions or pipelines.
 
 ```yaml
 - name: Scaffold Directory
   run: npx tree-fs structure.txt
-```
-
-To test without writing files (Dry Run):
-```bash
-tree-fs structure.txt --dry-run
 ```
 
 ## License
@@ -207,4 +132,4 @@ MIT
 
 > **{ github.com/mgks }**
 > 
-> ![Website Badge](https://img.shields.io/badge/Visit-mgks.dev-blue?style=flat&link=https%3A%2F%2Fmgks.dev) ![Sponsor Badge](https://img.shields.io/badge/%20%20Become%20a%20Sponsor%20%20-red?style=flat&logo=github&link=https%3A%2F%2Fgithub.com%2Fsponsors%2Fmgks)
+> <a href="https://mgks.dev"><img src="https://img.shields.io/badge/Visit-mgks.dev-blue?style=flat&link=https%3A%2F%2Fmgks.dev"></a> <a href="https://github.com/sponsors/mgks"><img src="https://img.shields.io/badge/%20%20Become%20a%20Sponsor%20%20-red?style=flat&logo=github&link=https%3A%2F%2Fgithub.com%2Fsponsors%2Fmgks"></a>
