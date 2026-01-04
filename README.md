@@ -11,9 +11,8 @@
 
 <img width="720" src="https://github.com/mgks/tree-fs/blob/main/preview.gif?raw=true">
 
-## Why tree-fs?
-
 LLMs (ChatGPT, Claude, DeepSeek) are great at planning architectures but bad at executing them.
+
 They often output this:
 
 ```bash
