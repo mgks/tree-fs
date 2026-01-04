@@ -1,19 +1,17 @@
 # tree-fs
 
-**tree-fs** is a tiny, zero-dependency Node.js utility that turns text-based directory trees into physical files and folders.
+**`tree-fs` is a tiny, zero-dependency Node.js utility that turns text-based directory trees into physical files and folders.**
 
-It is designed to be the **standard "Paste & Go" receiver for AI-generated code**.
-
-<a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/v/tree-fs.svg?style=flat-square&color=007acc" alt="npm version"></a>
-<a href="https://www.npmjs.com/package/tree-fs"><img src="https://img.shields.io/npm/dt/tree-fs.svg?style=flat-square&color=success" alt="npm downloads"></a>
-<a href="https://github.com/mgks/tree-fs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license"></a>
-<a href="https://github.com/mgks/tree-fs/stargazers"><img src="https://img.shields.io/github/stars/mgks/tree-fs?style=flat-square&logo=github" alt="stars"></a>
-
-## ⚡ Why tree-fs?
-
-<p align="">
-  <img src="https://github.com/mgks/tree-fs/blob/main/preview.gif?raw=true" width="720">
+<p>
+  <img src="https://img.shields.io/npm/v/tree-fs.svg?style=flat-square&color=d25353" alt="npm version">
+  <img src="https://img.shields.io/bundlephobia/minzip/tree-fs?style=flat-square&color=38bd24" alt="size">
+  <img src="https://img.shields.io/npm/dt/tree-fs.svg?style=flat-square&color=success&color=38bd24" alt="npm downloads">
+  <img src="https://img.shields.io/github/license/mgks/tree-fs.svg?style=flat-square&color=blue" alt="license">
 </p>
+
+<img width="720" src="https://github.com/mgks/tree-fs/blob/main/preview.gif?raw=true">
+
+## Why tree-fs?
 
 LLMs (ChatGPT, Claude, DeepSeek) are great at planning architectures but bad at executing them.
 They often output this:
@@ -26,18 +24,18 @@ my-app
 └── README.md
 ```
 
-Copying that structure manually is tedious. **tree-fs** makes it instant.
+Copying that structure manually is tedious. **tree-fs** makes it instant. It is designed to be the **standard "Paste & Go" receiver for AI-generated code**.
 
-### Features
+## Features
 *   **AI Compatible:** Strips comments, emojis, and weird formatting automatically.
 *   **Deterministic:** Same text input = same file structure. Always.
 *   **Safe:** Never overwrites existing files by default.
 *   **Smart:** Distinguishes `v1.0` (folder) from `v1.0.js` (file) automatically.
 *   **Zero Dependencies:** Installs in seconds.
 
-## 🚀 Usage
+## Usage
 
-### 1. Interactive Mode (The "Paste" Workflow)
+### Interactive Mode (The "Paste" Workflow)
 Perfect for when ChatGPT gives you a project structure.
 
 ```bash
@@ -46,14 +44,14 @@ npx tree-fs
 1.  Paste your tree.
 2.  Press **Enter twice**.
 
-### 2. CLI with File Input
+### CLI with File Input
 Generate structure from a text file saved in your repo.
 
 ```bash
 tree-fs structure.txt
 ```
 
-### 3. Unix Piping (Stdin)
+### Unix Piping (Stdin)
 Pipe content directly for automation.
 
 ```bash
@@ -62,7 +60,7 @@ pbpaste | tree-fs                # From clipboard (macOS)
 echo "src/\n index.js" | tree-fs # Echo directly
 ```
 
-### 4. Programmatic API
+### Programmatic API
 Embed `tree-fs` into your own CLIs or scripts.
 
 ```javascript
@@ -77,11 +75,11 @@ src
 generateFS(tree, process.cwd())
 ```
 
-## 🛡️ Robustness & Syntax
+## Robustness & Syntax
 
 tree-fs is built to handle the "messy reality" of text inputs. It creates the structure you *intend*, not just what you *type*.
 
-### 1. Noise Cleaning (Comments & Rich Text)
+### Noise Cleaning (Comments & Rich Text)
 We automatically strip comments, indicators, and "decorative" emojis often added by AI models.
 
 ```bash
@@ -93,7 +91,7 @@ project
 ```
 *Result: Clean folder `src` and files `main.js`, `theme.css`, `.env`.*
 
-### 2. Flexible Formats
+### Flexible Formats
 We support standard trees, ASCII art, and mixed indentation.
 ```bash
 project
@@ -103,15 +101,15 @@ project
   └── space-indentation
 ```
 
-### 3. Smart Folder Detection
+### Smart Folder Detection
 *   **Explicit:** Ends in slash (`v1.0/` → Folder).
 *   **Implicit:** Has children (`v1.0` containing files → Folder).
 *   **Files:** Known configs (`Dockerfile`, `Makefile`, `LICENSE`) are treated as files even without extensions.
 
-### 4. Copy-Paste Resilience
+### Copy-Paste Resilience
 If you copy a partial tree and miss the vertical pipe (`── folder` instead of `├── folder`), or accidentally indent lines with extra spaces, `tree-fs` automatically detects and aligns them to the correct root.
 
-## 🤖 The AI Workflow
+## The AI Workflow
 
 To get the perfect output from ChatGPT, Claude, or DeepSeek, add this to your system prompt:
 
@@ -119,7 +117,7 @@ To get the perfect output from ChatGPT, Claude, or DeepSeek, add this to your sy
 
 Then simply copy the output and run `npx tree-fs`.
 
-## 📦 CI/CD Integration
+## CI/CD Integration
 
 ```yaml
 - name: Scaffold Directory
